@@ -3,11 +3,10 @@
 .DS_Store
 /captures
 .externalNativeBuild
-.gradle/
 .idea/
-gradle/
+.gradle
 build/
-build.gradle
 gradlew
 gradlew.bat
 settings.gradle
+local.properties
