@@ -28,6 +28,7 @@ class PopupDialogFragment : DialogFragment() {
         val dialogWindow = dialog.window
 
         val inflater = requireActivity().layoutInflater
+        var settingView = inflater.inflate(R.layout.popup_layout,null)
 
         val dataStore : SharedPreferences = this.activity!!.getSharedPreferences("DataStore",
             Context.MODE_PRIVATE)
@@ -35,19 +36,19 @@ class PopupDialogFragment : DialogFragment() {
         val getPath = dataStore.getString("InputPath","")
         val paint = Paint()
 
-        val baseBitmap = Bitmap.createBitmap(1000, 800, Bitmap.Config.ARGB_8888)
+        val baseBitmap = Bitmap.createBitmap(1080, 1200, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(baseBitmap)
 
         val ios = FileInputStream(getPath)
         var photoBitmap =  BitmapFactory.decodeStream(ios)
-        photoBitmap = Bitmap.createScaledBitmap(photoBitmap,1000,800,false)
+        photoBitmap = Bitmap.createScaledBitmap(photoBitmap,1080,1200,false)
         canvas.drawBitmap(photoBitmap,0F,0F,paint)
 
         var frameBitmap = BitmapFactory.decodeResource(resources, R.drawable.lgtm)
-        frameBitmap = Bitmap.createScaledBitmap(frameBitmap,1000,800,false)
-        canvas.drawBitmap(frameBitmap,0F,0F,paint)
+        frameBitmap = Bitmap.createScaledBitmap(frameBitmap,500,500,false)
+        canvas.drawBitmap(frameBitmap,540F,600F,paint)
+//        canvas.drawBitmap(frameBitmap,280F,300F,paint) 大体真ん中
 
-        var settingView = inflater.inflate(R.layout.popup_layout,null)
         val tmpPopupView : ImageView = settingView.findViewById(R.id.popupView)
         tmpPopupView.setImageBitmap(baseBitmap)
 
