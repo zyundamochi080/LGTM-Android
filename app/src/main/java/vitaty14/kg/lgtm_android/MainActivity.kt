@@ -3,27 +3,49 @@ package vitaty14.kg.lgtm_android
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
+import android.hardware.camera2.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment.*
+import android.util.Log
 import android.view.Surface
 import android.view.TextureView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val PERMISSION_WRITE_STORAGE = 600
+        const val PERMISSION_READ_STORAGE  = 650
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val writePermission  = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission  = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        if ( (writePermission != PackageManager.PERMISSION_GRANTED) || (readPermission != PackageManager.PERMISSION_GRANTED) ) {
+            PERMISSION_WRITE_STORAGE.requestStoragePermission(PERMISSION_READ_STORAGE)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-
         if (SurfaceView.isAvailable) {
             openCamera()
         } else {
@@ -73,9 +95,9 @@ class MainActivity : AppCompatActivity() {
             return
         }
         val texture = SurfaceView.surfaceTexture
-        texture.setDefaultBufferSize(640, 480)
-        val surface = Surface(texture)
+        texture.setDefaultBufferSize(SurfaceView.width, SurfaceView.height)
 
+        val surface = Surface(texture)
         val previewRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         previewRequestBuilder.addTarget(surface)
 
@@ -83,10 +105,82 @@ class MainActivity : AppCompatActivity() {
             override fun onConfigured(session: CameraCaptureSession) {
                 captureSession = session
                 captureSession?.setRepeatingRequest(previewRequestBuilder.build(), null, null)
-            }
 
+                shutterButton.setOnClickListener {
+                    val appDir = File(getExternalStoragePublicDirectory(DIRECTORY_DCIM) ,"/LGTM" )
+
+                    try {
+                        val nowTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
+                        val filename = "$nowTime.jpg"
+                        val file = (appDir.absolutePath) + "/" +filename
+
+                        captureSession?.stopRepeating()
+                        if (SurfaceView.isAvailable) {
+                            if(!appDir.exists()) {
+                                appDir.mkdir()
+                            }
+
+                            val fos = FileOutputStream(file,true)
+                            val bitmap: Bitmap = SurfaceView.bitmap
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                            fos.close()
+                        }
+                        Toast.makeText(this@MainActivity, "Saved: $file", Toast.LENGTH_SHORT).show()
+                    } catch (e: CameraAccessException) {
+                        Log.d("debug", "CameraAccessException Error: $e")
+                    } catch (e: FileNotFoundException) {
+                        Log.d("debug", "FileNotFoundException Error: $e")
+                    } catch (e: IOException) {
+                        Log.d("debug", "IOException Error: $e")
+                    } catch (e: Exception) {
+                        Log.d("debug", "Other Error: $e")
+                    }
+                    captureSession?.setRepeatingRequest(previewRequestBuilder.build(), null, null)
+                }
+            }
             override fun onConfigureFailed(session: CameraCaptureSession) {}
         }, null)
+    }
+
+    private fun Int.requestStoragePermission(READ_STORAGE_PERMISSION: Int) {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            AlertDialog.Builder(baseContext)
+                .setMessage("Permission Here")
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    requestPermissions(
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        this
+                    )
+                }
+                .setNegativeButton(android.R.string.cancel) { _, _ ->
+                    finish()
+                }
+                .create()
+        } else {
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                this
+            )
+        }
+        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            AlertDialog.Builder(baseContext)
+                .setMessage("Permission Here")
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    requestPermissions(
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        READ_STORAGE_PERMISSION
+                    )
+                }
+                .setNegativeButton(android.R.string.cancel) { _, _ ->
+                    finish()
+                }
+                .create()
+        } else {
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                READ_STORAGE_PERMISSION
+            )
+        }
     }
 
 }
