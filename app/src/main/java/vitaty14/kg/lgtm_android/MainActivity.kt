@@ -2,6 +2,7 @@ package vitaty14.kg.lgtm_android
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.SurfaceTexture
@@ -12,7 +13,6 @@ import android.os.Environment.*
 import android.util.Log
 import android.view.Surface
 import android.view.TextureView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -125,7 +125,15 @@ class MainActivity : AppCompatActivity() {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
                             fos.close()
                         }
-                        Toast.makeText(this@MainActivity, "Saved: $file", Toast.LENGTH_SHORT).show()
+
+                        val dataStore : SharedPreferences = getSharedPreferences("DataStore",
+                            Context.MODE_PRIVATE)
+                        val editor = dataStore.edit()
+                        editor.putString("InputPath",file)
+                        editor.commit()
+
+                        val fragmentPopup = PopupDialogFragment()
+                        fragmentPopup.show(supportFragmentManager,"PopupRequestDialog")
                     } catch (e: CameraAccessException) {
                         Log.d("debug", "CameraAccessException Error: $e")
                     } catch (e: FileNotFoundException) {

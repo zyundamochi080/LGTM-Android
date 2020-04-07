@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LGTM-Android</string>
+    <string name="app_OK">OK</string>
+    <string name="app_cancel">Cancel</string>
 </resources>
