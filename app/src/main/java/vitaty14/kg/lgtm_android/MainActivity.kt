@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment.*
 import android.util.Log
-import android.view.Surface
-import android.view.TextureView
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -100,6 +99,14 @@ class MainActivity : AppCompatActivity() {
         val surface = Surface(texture)
         val previewRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         previewRequestBuilder.addTarget(surface)
+        previewRequestBuilder.set(
+            CaptureRequest.CONTROL_MODE,
+            CaptureRequest.CONTROL_MODE_AUTO
+        )
+        previewRequestBuilder.set(
+            CaptureRequest.CONTROL_AF_MODE,
+            CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
+        )
 
         cameraDevice?.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
             override fun onConfigured(session: CameraCaptureSession) {
