@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val writePermission  = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val readPermission  = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        if ( (writePermission != PackageManager.PERMISSION_GRANTED) || (readPermission != PackageManager.PERMISSION_GRANTED) ) {
+        if ((writePermission != PackageManager.PERMISSION_GRANTED) || (readPermission != PackageManager.PERMISSION_GRANTED)) {
             PERMISSION_WRITE_STORAGE.requestStoragePermission(PERMISSION_READ_STORAGE)
         }
     }
@@ -112,10 +112,8 @@ class MainActivity : AppCompatActivity() {
             override fun onConfigured(session: CameraCaptureSession) {
                 captureSession = session
                 captureSession?.setRepeatingRequest(previewRequestBuilder.build(), null, null)
-
                 shutterButton.setOnClickListener {
                     val appDir = File(getExternalStoragePublicDirectory(DIRECTORY_DCIM) ,"/LGTM" )
-
                     try {
                         val nowTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
                         val filename = "$nowTime.jpg"
@@ -123,18 +121,14 @@ class MainActivity : AppCompatActivity() {
 
                         captureSession?.stopRepeating()
                         if (SurfaceView.isAvailable) {
-                            if(!appDir.exists()) {
-                                appDir.mkdir()
-                            }
-
+                            if (!appDir.exists()) appDir.mkdir()
                             val fos = FileOutputStream(file,true)
                             val bitmap: Bitmap = SurfaceView.bitmap
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
                             fos.close()
                         }
 
-                        val dataStore : SharedPreferences = getSharedPreferences("DataStore",
-                            Context.MODE_PRIVATE)
+                        val dataStore : SharedPreferences = getSharedPreferences("DataStore", Context.MODE_PRIVATE)
                         val editor = dataStore.edit()
                         editor.putString("InputPath",file)
                         editor.putInt("widthSize",SurfaceView.width)
