@@ -130,6 +130,8 @@ class MainActivity : AppCompatActivity() {
                             Context.MODE_PRIVATE)
                         val editor = dataStore.edit()
                         editor.putString("InputPath",file)
+                        editor.putInt("widthSize",SurfaceView.width)
+                        editor.putInt("heightSize",SurfaceView.height)
                         editor.commit()
 
                         val fragmentPopup = PopupDialogFragment()

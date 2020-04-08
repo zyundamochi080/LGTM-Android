@@ -8,13 +8,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -28,20 +25,22 @@ class PopupDialogFragment : DialogFragment() {
         val dialogWindow = dialog.window
 
         val inflater = requireActivity().layoutInflater
-        var settingView = inflater.inflate(R.layout.popup_layout,null)
+        val settingView = inflater.inflate(R.layout.popup_layout,null)
 
         val dataStore : SharedPreferences = this.activity!!.getSharedPreferences("DataStore",
             Context.MODE_PRIVATE)
 
         val getPath = dataStore.getString("InputPath","")
+        val getWidth = dataStore.getInt("widthSize",600)
+        val getHeight = dataStore.getInt("heightSize",480)
         val paint = Paint()
 
-        val baseBitmap = Bitmap.createBitmap(1080, 1200, Bitmap.Config.ARGB_8888)
+        val baseBitmap = Bitmap.createBitmap(getWidth, getHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(baseBitmap)
 
         val ios = FileInputStream(getPath)
         var photoBitmap =  BitmapFactory.decodeStream(ios)
-        photoBitmap = Bitmap.createScaledBitmap(photoBitmap,1080,1200,false)
+        photoBitmap = Bitmap.createScaledBitmap(photoBitmap,getWidth,getHeight,false)
         canvas.drawBitmap(photoBitmap,0F,0F,paint)
 
         var frameBitmap = BitmapFactory.decodeResource(resources, R.drawable.lgtm)
