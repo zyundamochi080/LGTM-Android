@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment.*
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -57,6 +58,23 @@ class MainActivity : AppCompatActivity() {
                 override fun onSurfaceTextureDestroyed(texture: SurfaceTexture?): Boolean = true
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_about_setting -> {
+                Toast.makeText(this,"tapped",Toast.LENGTH_SHORT).show()
+            }
+            R.id.menu_about_app -> {
+                Toast.makeText(this,"tapped",Toast.LENGTH_SHORT).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private var cameraDevice: CameraDevice? = null
