@@ -2,15 +2,15 @@
 <resources>
 
     <string-array name="lgtm_color">
-        <item>Red</item>
-        <item>Blue</item>
-        <item>Green</item>
+        <item>red</item>
+        <item>blue</item>
+        <item>green</item>
     </string-array>
 
     <string-array name="lgtm_colorValue">
-        <item>Red</item>
-        <item>Blue</item>
-        <item>Green</item>
+        <item>red</item>
+        <item>blue</item>
+        <item>green</item>
     </string-array>
 
 </resources>

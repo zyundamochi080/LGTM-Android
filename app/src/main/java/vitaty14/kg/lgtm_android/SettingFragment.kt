@@ -8,6 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
 
 class SettingFragment: PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.sharedPreferencesName = "setting"
         setPreferencesFromResource(R.xml.preference, rootKey)
     }
 

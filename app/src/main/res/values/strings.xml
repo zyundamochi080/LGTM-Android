@@ -4,5 +4,5 @@
     <string name="app_cancel">Cancel</string>
     <string name="setting_about_setting">Setting</string>
     <string name="setting_about_app">About App</string>
-    <string name="setting_default_color">Red</string>
+    <string name="setting_default_color">red</string>
 </resources>

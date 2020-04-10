@@ -24,11 +24,13 @@ class PopupDialogFragment : DialogFragment() {
         val dialog = Dialog(context!!)
         val dialogWindow = dialog.window
 
+        val colorSetting = this.activity!!.getSharedPreferences("setting",Context.MODE_PRIVATE)
+        val checkColor = colorSetting.getString("ColorList","red")
+
         val inflater = requireActivity().layoutInflater
         val settingView = inflater.inflate(R.layout.popup_layout,null)
 
-        val dataStore : SharedPreferences = this.activity!!.getSharedPreferences("DataStore",
-            Context.MODE_PRIVATE)
+        val dataStore : SharedPreferences = this.activity!!.getSharedPreferences("DataStore", Context.MODE_PRIVATE)
 
         val getPath = dataStore.getString("InputPath","")
         val getWidth = dataStore.getInt("widthSize",600)
@@ -43,7 +45,21 @@ class PopupDialogFragment : DialogFragment() {
         photoBitmap = Bitmap.createScaledBitmap(photoBitmap,getWidth,getHeight,false)
         canvas.drawBitmap(photoBitmap,0F,0F,paint)
 
-        var frameBitmap = BitmapFactory.decodeResource(resources, R.drawable.lgtm)
+        var frameBitmap = when(checkColor) {
+            "red" -> {
+                BitmapFactory.decodeResource(resources, R.drawable.lgtmled)
+            }
+            "green" -> {
+                BitmapFactory.decodeResource(resources, R.drawable.lgtmblue)
+            }
+            "blue" -> {
+                BitmapFactory.decodeResource(resources, R.drawable.lgtmgreen)
+            }
+            else -> {
+                BitmapFactory.decodeResource(resources, R.drawable.lgtmled)
+            }
+        }
+
         frameBitmap = Bitmap.createScaledBitmap(frameBitmap,500,500,false)
         canvas.drawBitmap(frameBitmap,540F,600F,paint)
 //        canvas.drawBitmap(frameBitmap,280F,300F,paint) 大体真ん中

@@ -28,6 +28,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var prefs: SharedPreferences
+
     companion object {
         const val PERMISSION_WRITE_STORAGE = 600
         const val PERMISSION_READ_STORAGE  = 650
