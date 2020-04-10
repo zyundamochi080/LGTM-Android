@@ -2,6 +2,7 @@ package vitaty14.kg.lgtm_android
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -76,10 +77,8 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_about_setting -> {
                 cameraDevice?.close()
                 cameraDevice = null
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.settingLayout,SettingFragment())
-                    .commit()
+                val intent = Intent(this,SettingActivity::class.java)
+                startActivity(intent)
             }
             R.id.menu_about_app -> {
                 Toast.makeText(this,"tapped",Toast.LENGTH_SHORT).show()
