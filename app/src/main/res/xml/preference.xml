@@ -4,14 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="dialog">
+        android:title="setting list"
+        app:iconSpaceReserved="false">
         <ListPreference
             android:key="ColorList"
-            android:title="ColorList"
+            android:title="Text Color"
+            android:summary="Text color to composite"
             android:entries="@array/lgtm_color"
             android:entryValues="@array/lgtm_colorValue"
             android:dialogTitle="Text Color"
-            android:defaultValue="Red"/>
+            android:defaultValue="@string/setting_default_color"/>
+
+        <ListPreference
+            android:key="TextSize"
+            android:title="Text Size"
+            android:summary="Text size to composite"
+            android:entries="@array/lgtm_size"
+            android:entryValues="@array/lgtm_sizeValue"
+            android:dialogTitle="Text Size"
+            android:defaultValue="@string/setting_default_size"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="other"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:title="Version"
+            android:summary="@string/versionName">
+        </Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>
