@@ -2,6 +2,7 @@ package vitaty14.kg.lgtm_android
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -55,7 +56,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture?, p1: Int, p2: Int) {}
                 override fun onSurfaceTextureUpdated(texture: SurfaceTexture?) {}
-                override fun onSurfaceTextureDestroyed(texture: SurfaceTexture?): Boolean = true
+                override fun onSurfaceTextureDestroyed(texture: SurfaceTexture?): Boolean {
+                    if(cameraDevice != null) {
+                        cameraDevice?.close()
+                        cameraDevice = null
+                    }
+                    return false
+                }
             }
         }
     }
@@ -68,7 +75,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_about_setting -> {
-                Toast.makeText(this,"tapped",Toast.LENGTH_SHORT).show()
+                cameraDevice?.close()
+                cameraDevice = null
+                val intent = Intent(this,SettingActivity::class.java)
+                startActivity(intent)
             }
             R.id.menu_about_app -> {
                 Toast.makeText(this,"tapped",Toast.LENGTH_SHORT).show()
