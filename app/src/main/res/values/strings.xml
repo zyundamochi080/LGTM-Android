@@ -3,7 +3,7 @@
     <string name="app_OK">OK</string>
     <string name="app_cancel">Cancel</string>
     <string name="setting_about_setting">Setting</string>
-    <string name="setting_about_app">About App</string>
+    <string name="setting_about_app">About App(Github)</string>
     <string name="setting_default_color">red</string>
     <string name="setting_default_size">medium</string>
 </resources>

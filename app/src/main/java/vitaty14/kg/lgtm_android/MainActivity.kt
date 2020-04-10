@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment.*
@@ -83,7 +84,9 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.menu_about_app -> {
-                Toast.makeText(this,"tapped",Toast.LENGTH_SHORT).show()
+                val uri = Uri.parse("https://github.com/zyundamochi080/LGTM-Android")
+                val intent = Intent(Intent.ACTION_VIEW,uri)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

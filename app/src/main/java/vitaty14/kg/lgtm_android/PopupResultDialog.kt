@@ -24,8 +24,9 @@ class PopupDialogFragment : DialogFragment() {
         val dialog = Dialog(context!!)
         val dialogWindow = dialog.window
 
-        val colorSetting = this.activity!!.getSharedPreferences("setting",Context.MODE_PRIVATE)
-        val checkColor = colorSetting.getString("ColorList","red")
+        val settingPreference = this.activity!!.getSharedPreferences("setting",Context.MODE_PRIVATE)
+        val checkColor = settingPreference.getString("ColorList","red")
+        val checkSize = settingPreference.getString("TextSize","medium")
 
         val inflater = requireActivity().layoutInflater
         val settingView = inflater.inflate(R.layout.popup_layout,null)
@@ -60,9 +61,36 @@ class PopupDialogFragment : DialogFragment() {
             }
         }
 
-        frameBitmap = Bitmap.createScaledBitmap(frameBitmap,500,500,false)
-        canvas.drawBitmap(frameBitmap,540F,600F,paint)
-//        canvas.drawBitmap(frameBitmap,280F,300F,paint) 大体真ん中
+        frameBitmap = when(checkSize) {
+            "small" -> {
+                Bitmap.createScaledBitmap(frameBitmap,400,400,false)
+            }
+            "medium" -> {
+                Bitmap.createScaledBitmap(frameBitmap,500,500,false)
+            }
+            "large" -> {
+                Bitmap.createScaledBitmap(frameBitmap,650,650,false)
+            }
+            else -> {
+                Bitmap.createScaledBitmap(frameBitmap,500,500,false)
+            }
+        }
+
+        when(checkSize) {
+            "small" -> {
+                canvas.drawBitmap(frameBitmap,500F,700F,paint)
+            }
+            "medium" -> {
+                canvas.drawBitmap(frameBitmap,540F,700F,paint)
+//                canvas.drawBitmap(frameBitmap,280F,300F,paint) 大体真ん中
+            }
+            "large" -> {
+                canvas.drawBitmap(frameBitmap,300F,800F,paint)
+            }
+            else -> {
+                canvas.drawBitmap(frameBitmap,540F,700F,paint)
+            }
+        }
 
         val tmpPopupView : ImageView = settingView.findViewById(R.id.popupView)
         tmpPopupView.setImageBitmap(baseBitmap)
