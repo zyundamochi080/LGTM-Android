@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                 captureSession = session
                 captureSession?.setRepeatingRequest(previewRequestBuilder.build(), null, null)
                 shutterButton.setOnClickListener {
-                    val appDir = File(getExternalStoragePublicDirectory(DIRECTORY_DCIM) ,"/LGTM" )
+                    val appDir = File(getExternalFilesDir(DIRECTORY_DCIM) ,"/LGTM" )
                     try {
                         val nowTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
                         val filename = "$nowTime.jpg"
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
                         captureSession?.stopRepeating()
                         if (SurfaceView.isAvailable) {
-                            if (!appDir.exists()) appDir.mkdir()
+                            if (!appDir.exists()) appDir.mkdirs()
                             val fos = FileOutputStream(file,true)
                             val bitmap: Bitmap = SurfaceView.bitmap
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
